@@ -1,4 +1,4 @@
-# DIS18-ORKG
+# DIS18-ORGK
 
 ## Topic
 Extracting data about time and place of outbreaks from diseases e.g. ehec, avian influenza.
