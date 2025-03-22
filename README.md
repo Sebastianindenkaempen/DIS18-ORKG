@@ -13,6 +13,7 @@ The pubmed api contains three different components:
 - **ESummary:** finds and returns metadata for articles. Input could be the article IDs from ESearch. URL: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi
 - **EFetch:** returns abstracts and full texts. URL: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi
 
+Source: https://www.ncbi.nlm.nih.gov/books/NBK25500/
 
 ### Text Mining Ideas
 

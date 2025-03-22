@@ -1,26 +1,25 @@
 import requests
 import time
 
-# PubMed ESearch API URL
 search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
 
-# Parameter für die Anfrage
-params = {
-    "db": "pubmed",            # PubMed-Datenbank
-    "term": "Avian influenza",  # Suchbegriff (z. B. Vogelgrippe)
-    "retmode": "json",         # Antwort im JSON-Format
-    "retmax": "2"              # Nur ein Ergebnis zurück
+search_terms = ["Avian influenza outbreak", "EHEC outbreak"]
 
-}
+def get_pmids(search_term, no_of_results):
+    params = {
+        "db": "pubmed",            
+        "term": search_term, 
+        "retmode": "json",                  # Datentyp der Antwort der API. Kann auch xml sein
+        "retmax": no_of_results             # Anzahl der Ergebnisse
+    }
+    response = requests.get(search_url, params=params)
+    time.sleep(0.5)                         # Wait after request to respect API limit of 3 requests per second
 
-# Anfrage senden und warten, um Rate Limit zu respektieren
-response = requests.get(search_url, params=params)
-time.sleep(0.5)  # Warten, um Rate Limit von max 3 Anfragen pro Sekunde zu respektieren
+    if response.status_code == 200:
+        data = response.json()
+        return data["esearchresult"]["idlist"]
+    else:
+        print(f"Fehler bei der Anfrage für '{search_term}': {response.status_code}")
+        return []
 
-# Wenn die Antwort erfolgreich war (HTTP Status 200)
-if response.status_code == 200:
-    data = response.json()  # Antwort als JSON parsen
-    pmid = data["esearchresult"]["idlist"][0:]
-    print(f"Gefundene PMID: {pmid}")
-else:
-    print(f"Fehler bei der Anfrage: {response.status_code}")
+get_pmids(search_terms[0], 3)
