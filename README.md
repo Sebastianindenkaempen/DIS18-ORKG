@@ -15,6 +15,9 @@ The pubmed api contains three different components:
 
 Source: https://www.ncbi.nlm.nih.gov/books/NBK25500/
 
+Sources Text Mining: https://pmc.ncbi.nlm.nih.gov/tools/textmining/ 
+
+
 ### Text Mining Ideas
 
 ```
