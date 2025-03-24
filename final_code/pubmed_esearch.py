@@ -3,9 +3,6 @@ import time
 import pandas as pd
 import xml.etree.ElementTree as ET
 
-
-search_terms = ["Avian influenza outbreak", "EHEC outbreak"]
-
 # https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch
 
 def get_pmcids(search_term, no_of_results):
@@ -27,6 +24,7 @@ def get_pmcids(search_term, no_of_results):
         return []
 
 
+# search_terms = ["Avian influenza outbreak", "EHEC outbreak"]
 # df = pd.DataFrame(columns=['PMCID', 'search_term'])
 
 # for term in search_terms:
