@@ -15,7 +15,6 @@ def get_pmcids(search_term, no_of_results):
     }
     response = requests.get(search_url, params=params)
     time.sleep(0.5)                                     # Wait after request to respect API limit of 3 requests per second TODO: Add Source
-    # return response.url
     if response.status_code == 200:
         data = response.json()
         return data["esearchresult"]["idlist"]
