@@ -25,11 +25,11 @@ import nltk
 import spaCy
 
 ```
-### Repo structure 
-## Folder final_code    
+## Repo structure 
+### Folder final_code    
 Contains tested functions, that can be called
 
-## Folder playground
+### Folder playground
 Contains code that is in developement or not yet tested
 
 
