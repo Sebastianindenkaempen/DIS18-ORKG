@@ -24,16 +24,14 @@ def get_pmcids(search_term, no_of_results):
         return []
 
 
-# search_terms = ["Avian influenza outbreak", "EHEC outbreak"]
-# df = pd.DataFrame(columns=['PMCID', 'search_term'])
+def create_df_pmcids(search_terms, no_of_results):
+    df = pd.DataFrame(columns=['PMCID', 'search_term'])
+    
+    for term in search_terms:
+        pmcids = get_pmcids(term, no_of_results) 
+        temp_df = pd.DataFrame({"PMCID": pmcids, "search_term": term}) 
+        df = pd.concat([df, temp_df], ignore_index=True)
+        return df
 
-# for term in search_terms:
-#     pmcids = get_pmcids(term, 50) 
-#     temp_df = pd.DataFrame({"PMCID": pmcids, "search_term": term}) 
-#     df = pd.concat([df, temp_df], ignore_index=True)
-#     # print(pmcids)
-#     df.to_csv('test.csv', encoding="utf-8")
-
-# print(df)
 
 
