@@ -30,6 +30,7 @@ def create_df_pmcids(search_terms, no_of_results):
         pmcids = get_pmcids(term, no_of_results) 
         temp_df = pd.DataFrame({"PMCID": pmcids, "search_term": term}) 
         df = pd.concat([df, temp_df], ignore_index=True)
+    df["PMCID"] = "PMC" + df["PMCID"].astype(str)
     return df
 
 
