@@ -56,6 +56,7 @@ httpcore=1.0.2=py310haa95532_0
 httpx=0.27.0=py310haa95532_0
 icu=73.1=h6c2663c_0
 idna=3.7=py310haa95532_0
+iniconfig=1.1.1=pyhd3eb1b0_0
 intel-openmp=2023.1.0=h59b6b97_46320
 ipykernel=6.29.5=py310haa95532_1
 ipython=8.30.0=py310haa95532_0
@@ -136,6 +137,7 @@ parso=0.8.4=py310haa95532_0
 pillow=11.1.0=py310h096bfcc_0
 pip=25.0=py310haa95532_0
 platformdirs=3.10.0=py310haa95532_0
+pluggy=1.5.0=py310haa95532_0
 prometheus_client=0.13.1=pyhd3eb1b0_0
 prompt-toolkit=3.0.43=py310haa95532_0
 prompt_toolkit=3.0.43=hd3eb1b0_0
@@ -149,6 +151,7 @@ pygments=2.15.1=py310haa95532_1
 pyqt=6.7.1=py310h5da7b33_0
 pyqt6-sip=13.9.1=py310h827c3e9_0
 pysocks=1.7.1=py310haa95532_0
+pytest=8.3.4=py310haa95532_0
 python=3.10.16=h4607a30_1
 python-dateutil=2.9.0post0=py310haa95532_2
 python-fastjsonschema=2.20.0=py310haa95532_0
