@@ -98,8 +98,8 @@ def extract_article_data(xml):
     return data
 
 
-def pubmed_api_pull(search_terms, no_of_results):
-    df = create_df_pmcids(search_terms=search_terms, no_of_results=no_of_results)
+def pubmed_api_pull(term_input, result_no_input):
+    df = create_df_pmcids(search_terms=term_input, no_of_results=result_no_input)
     df["has_result"] = df["PMCID"].apply(check_if_pmcid_is_available)
     df_filtered = df[df['has_result'] == True]
     final_df = pd.DataFrame(columns=['pmid', 'title', 'abstract', 'full_text', 'authors'])
