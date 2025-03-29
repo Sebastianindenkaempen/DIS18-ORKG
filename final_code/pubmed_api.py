@@ -59,6 +59,7 @@ def check_if_pmcid_is_available(pmcid):
             return False
     return False
 
+
 def get_full_xml(pmcid):
     search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
     params = {
@@ -75,7 +76,6 @@ def get_full_xml(pmcid):
         return "error"
     
 
-    
 def extract_article_data(xml):
     soup = BeautifulSoup(xml, features="xml")  # Verwende den XML-Parser von lxml
 
@@ -96,3 +96,14 @@ def extract_article_data(xml):
     data = pd.concat([data, temp_df], ignore_index=True)
 
     return data
+
+
+def pubmed_api_pull(search_terms, no_of_results):
+    df = create_df_pmcids(search_terms=search_terms, no_of_results=no_of_results)
+    df["has_result"] = df["PMCID"].apply(check_if_pmcid_is_available)
+    df_filtered = df[df['has_result'] == True]
+    final_df = pd.DataFrame(columns=['pmid', 'title', 'abstract', 'full_text', 'authors'])
+    for index, row in df_filtered.iterrows():
+        df_temp = extract_article_data(get_full_xml(row['PMCID']))
+        final_df = pd.concat([final_df, df_temp], ignore_index=True)
+    return final_df
