@@ -26,6 +26,23 @@ import spaCy
 
 ```
 
+## Anleitung zur Installation und Nutzung von Ollama
+
+### 1. Downloading Ollama
+- Besuche [Ollama Download](https://ollama.com/download) und lade den Installer herunter.
+- Führe `OllamaSetup.exe` aus.
+
+### 2. Downloading Mistral
+- Öffne die Eingabeaufforderung (cmd).
+- Führe den Befehl `ollama` aus, um zu überprüfen, ob die Installation erfolgreich war.
+- Führe den Befehl `ollama run mistral` aus, um Mistral herunterzuladen.
+- Du kannst jetzt in der Eingabeaufforderung (cmd) arbeiten oder das LLM über VS Code nutzen.
+
+### 3. Ollama starten
+- Falls Ollama nicht läuft, verwende den Befehl `ollama serve`.
+- Ollama läuft auf [http://localhost:11434](http://localhost:11434).
+
+
 
 
 
