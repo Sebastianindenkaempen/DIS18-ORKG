@@ -27,14 +27,14 @@ with user_input:
     search_terms_list = []
     if input_search_terms:
         search_terms_list.extend([term.strip() for term in input_search_terms.split(",")])
-    st.write(search_terms_list)
+    # st.write(search_terms_list)
 
     
     if st.button("Start Processing", disabled=st.session_state.is_running):
         st.session_state.is_running = True  # Deaktiviert die Inputs
 
         with st.spinner("Processing... Please wait"):
-            result = pubmed_api_pull(search_terms=search_terms_list, no_of_results=input_no_of_results)
+            result = pubmed_api_pull(term_input=search_terms_list, result_no_input=input_no_of_results)
 
             st.write("### Output:")
             st.write(result)
