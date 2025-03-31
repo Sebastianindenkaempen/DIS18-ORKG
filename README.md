@@ -1,5 +1,9 @@
 # DIS18-ORKG
 
+## How to use this repository
+1. Clone this repository
+2. Navigate into this repository using the command line `cd ./DIS18-ORKG`
+3. Execute the shell script using `./run_app.sh`
 ## Topic
 Extracting data about time and place of outbreaks from diseases e.g. ehec, avian influenza.
 
@@ -25,7 +29,12 @@ import nltk
 import spaCy
 
 ```
+## Repo structure 
+### Folder final_code    
+Contains tested functions, that can be called
 
+### Folder playground
+Contains code that is in developement or not yet tested
 
 
 
