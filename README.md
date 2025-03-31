@@ -29,6 +29,12 @@ import nltk
 import spaCy
 
 ```
+## Repo structure 
+### Folder final_code    
+Contains tested functions, that can be called
+### Folder playground
+Contains code that is in developement or not yet tested
+
 
 ## Anleitung zur Installation und Nutzung von Ollama
 
@@ -45,13 +51,4 @@ import spaCy
 ### 3. Ollama starten
 - Falls Ollama nicht läuft, verwende den Befehl `ollama serve`.
 - Ollama läuft auf [http://localhost:11434](http://localhost:11434).
-
-## Repo structure 
-### Folder final_code    
-Contains tested functions, that can be called
-
-### Folder playground
-Contains code that is in developement or not yet tested
-
-
 
