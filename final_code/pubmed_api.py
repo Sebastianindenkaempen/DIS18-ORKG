@@ -35,6 +35,18 @@ def create_df_pmcids(search_terms, no_of_results):
     df["PMCID"] = "PMC" + df["PMCID"].astype(str)
     return df
 
+def get_call_link(pmcid):
+    search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
+    params = {
+        "db": "pmc", 
+        "id": "open access[filter]+" + pmcid, 
+        "retmode": "xml"
+    }
+    response = requests.get(search_url, params=params)
+    time.sleep(0.5)
+
+    return response.url
+
 
 def check_if_pmcid_is_available(pmcid):
     search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
