@@ -3,7 +3,10 @@
 ## How to use this repository
 1. Clone this repository
 2. Navigate into this repository using the command line `cd ./DIS18-ORKG`
+3. Make sure the shell script ist ready to be executed by running: `chmod +x run_app.sh`
 3. Execute the shell script using `./run_app.sh`
+
+
 ## Topic
 Extracting data about time and place of outbreaks from diseases e.g. ehec, avian influenza.
 
