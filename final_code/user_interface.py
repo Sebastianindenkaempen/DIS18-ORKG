@@ -5,6 +5,7 @@
 
 import streamlit as st
 from final_code.pubmed_api import pubmed_api_pull
+from language_model import check_if_text_has_outbreak
 
 # creating containers to group elements
 header = st.container()

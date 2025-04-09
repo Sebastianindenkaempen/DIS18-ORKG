@@ -6,11 +6,22 @@ def check_if_text_has_outbreak(text):
         json={
             "model": "gemma3:1b",
             "prompt": 
-                """Im folgenden erhältst du einen Text. Ich möchte, dass du diesen Text daraufhin analysierst, ob es einen Krankheits
-                Ausbruch gegeben hat. Falls ja, gib bitte "True" zurück, falls nicht, gib "False" zurück. Hier der Text: """ + text,
+        f"""
+        Analysiere den folgenden Text:
+
+        {text}
+
+        Frage: Enthält dieser Text Informationen über einen Krankheitsausbruch?
+
+        Antworte bitte ausschließlich mit:
+        True  --> falls es Informationen über einen Krankheitsausbruch gibt
+        False --> falls es keine Informationen über einen Krankheitsausbruch gibt
+
+        Antwort:""",
             "stream": False
         }
-    )
+
+        )
     return response.json()["response"]
 
 def extract_outbreak_place(text):
