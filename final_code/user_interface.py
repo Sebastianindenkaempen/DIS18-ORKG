@@ -5,7 +5,9 @@
 
 import streamlit as st
 from pubmed_api import pubmed_api_pull
-from language_model import check_if_text_has_outbreak
+from text_mining import check_if_text_has_outbreak
+from text_mining import extract_date
+from text_mining import extract_location
 
 st.set_page_config(
     page_title="DIS18 - Project Dashboard", 
@@ -44,7 +46,15 @@ with user_input:
             result = pubmed_api_pull(term_input=search_terms_list, result_no_input=input_no_of_results)
             result["has_outbreak"] = result["full_text"].apply(check_if_text_has_outbreak)
 
-            st.write("### Output:")
+            st.write("### Output1:")
             st.write(result)
+
+            result_filtered = result.loc[(result.has_outbreak == True) | (result.has_outbreak == "True")].copy()
+            result_filtered["place"] = result_filtered["full_text"].apply(extract_location)
+            result_filtered["time"] = result_filtered["full_text"].apply(extract_date)
+            
+            st.write("### Output2:")
+            st.write(result_filtered)
+
 
             st.session_state.is_running = False  # Reaktiviert die Inputs nach Fertigstellung
