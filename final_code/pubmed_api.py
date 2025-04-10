@@ -16,7 +16,7 @@ def get_pmcids(search_term, no_of_results):
         "retmax": no_of_results,                        # Number of results
     }
     response = requests.get(search_url, params=params)
-    time.sleep(0.5)                                     # Wait after request to respect API limit of 3 requests per second TODO: Add Source
+    time.sleep(0.34)                                     # Wait after request to respect API limit of 3 requests per second TODO: Add Source
     if response.status_code == 200:
         data = response.json()
         return data["esearchresult"]["idlist"]
@@ -43,7 +43,7 @@ def get_call_link(pmcid):
         "retmode": "xml"
     }
     response = requests.get(search_url, params=params)
-    time.sleep(0.5)
+    time.sleep(0.34)
 
     return response.url
 
@@ -56,7 +56,7 @@ def check_if_pmcid_is_available(pmcid):
         "retmode": "xml"
     }
     response = requests.get(search_url, params=params)
-    time.sleep(0.5)
+    time.sleep(0.34)
     
     if response.status_code == 200:
         try:
@@ -80,7 +80,7 @@ def get_full_xml(pmcid):
         "retmode": "xml"
     }
     response = requests.get(search_url, params=params)
-    time.sleep(0.5)
+    time.sleep(0.34)
 
     if response.status_code == 200:
         return response.content
