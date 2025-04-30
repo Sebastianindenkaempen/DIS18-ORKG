@@ -8,12 +8,16 @@ from bs4 import BeautifulSoup
 # https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch
 
 def get_pmcids(search_term, no_of_results):
+    """
+    takes a string and integer as input, returns a list of pubmed IDs 
+    """
     search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
     params = {
-        "db": "pmc",                                    # Source: https://www.ncbi.nlm.nih.gov/books/NBK25497/table/chapter2.T._entrez_unique_identifiers_ui/?report=objectonly
-        "term": "open access[filter]+" + search_term,    # Source: https://pmc.ncbi.nlm.nih.gov/tools/openftlist/
-        "retmode": "json",                               # Return format. Changed to XML
-        "retmax": no_of_results,                        # Number of results
+        "db": "pubmed",                                                 # Source: https://www.ncbi.nlm.nih.gov/books/NBK25497/table/chapter2.T._entrez_unique_identifiers_ui/?report=objectonly
+        "term": "pubmed pmc open access[filter] AND " + search_term,    # Source: https://pmc.ncbi.nlm.nih.gov/tools/openftlist/
+        "retmode": "json",                                              # Return format. Changed from XML
+        "retmax": no_of_results,                                        # Number of results
+        "sort": "relevance"
     }
     response = requests.get(search_url, params=params)
     time.sleep(0.34)                                     # Wait after request to respect API limit of 3 requests per second TODO: Add Source
