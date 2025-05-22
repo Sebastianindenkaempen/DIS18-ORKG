@@ -1,22 +1,23 @@
 import requests
 import spacy
+import numpy as np
 
 def check_if_text_has_outbreak(text):
     response = requests.post(
         "http://localhost:11434/api/generate",
         json={
-            "model": "gemma3:1b",
+            "model": "llama3.2",
             "prompt": 
         f"""
-        Analysiere den folgenden Text:
+        Analysiere den folgenden Text sehr genau:
 
         {text}
 
-        Frage: Enthält dieser Text Informationen über einen Krankheitsausbruch?
+        Frage: Beschreibt der Text einen Krankheitsausbruch, bei dem sowohl ein konkreter Ort (z.B. Ländername, Stadt) als auch ein konkreter Zeitpunkt (z.B. Datum, Monat/Jahr) genannt werden?
 
-        Antworte bitte ausschließlich mit:
-        True  --> falls es Informationen über einen Krankheitsausbruch gibt
-        False --> falls es keine Informationen über einen Krankheitsausbruch gibt
+        Antworte ausschließlich mit:
+        True  --> falls sowohl Ort als auch konkreter Zeitpunkt des Ausbruchs im Text genannt werden
+        False --> falls Ort oder konkreter Zeitpunkt fehlen oder kein Ausbruch beschrieben wird
 
         Antwort:""",
             "stream": False
@@ -31,6 +32,15 @@ def check_if_text_has_outbreak(text):
     # else: 
     #     return "Error - No Answer from LLM"
     
+def parse_outbreak(value):
+    if isinstance(value, str):
+        val = value.lower()
+        if 'true' in val:
+            return True
+        elif 'false' in val:
+            return False
+    return np.nan
+
 
 def extract_location(text):
     nlp = spacy.load("en_core_web_sm")
@@ -44,17 +54,3 @@ def extract_date(text):
     dates = [ent.text for ent in doc.ents if ent.label_ == "DATE"]
     return ", ".join(dates) if dates else None
     
-
-# def extract_outbreak_place(text):
-#     response = requests.post(
-#         "http://localhost:11434/api/generate",
-#         json={
-#             "model": "mistral",
-#             "prompt": 
-#                 """Im folgenden erhältst du einen Text. Bitte untersuche diesen Text daraufhin an welchem Ort es einen Ausbruch
-#                  der Krankheit gegeben hat. Gib bitte ausschließlich den Ort zurück. Wenn es mehrere Ort gibt, gib sie mit
-#                   einem Semikolon getrennt an. Wenn kein Ort spezifiziert ist gib bitte N/A zurück. Hier der Text: """ + text,
-#             "stream": False
-#         }
-#     )
-#     return response.json()["response"]
