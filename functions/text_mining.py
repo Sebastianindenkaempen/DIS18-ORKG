@@ -23,12 +23,13 @@ def check_if_text_has_outbreak(text):
         }
 
         )
-    if response.json()["response"] == "True" or response.json()["response"] == "True\n":
-        return True
-    elif response.json()["response"] == "False" or response.json()["response"] == "False\n":
-        return False
-    else: 
-        return "Error - No Answer from LLM"
+    return response.json()["response"]
+    # if response.json()["response"] == "True" or response.json()["response"] == "True\n":
+    #     return True
+    # elif response.json()["response"] == "False" or response.json()["response"] == "False\n":
+    #     return False
+    # else: 
+    #     return "Error - No Answer from LLM"
     
 
 def extract_location(text):

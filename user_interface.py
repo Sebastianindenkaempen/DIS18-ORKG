@@ -49,7 +49,7 @@ with user_input:
             st.write("### Output1:")
             st.write(result)
 
-            result_filtered = result.loc[(result.has_outbreak == True) | (result.has_outbreak == "True")].copy()
+            result_filtered = result.loc[(result.has_outbreak == "True\n") | (result.has_outbreak == "True")].copy()
             result_filtered["place"] = result_filtered["full_text"].apply(extract_location)
             result_filtered["time"] = result_filtered["full_text"].apply(extract_date)
             
