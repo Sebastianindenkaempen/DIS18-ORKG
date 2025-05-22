@@ -1,6 +1,7 @@
 import requests
 import time
 import pandas as pd
+import numpy as np
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 # import pytest
@@ -63,6 +64,88 @@ def translate_pmid_to_pmcid(pmid):
     print("Kein PMCID gefunden.")
     return None
 
+def get_full_xml(pmcid):
+    search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
+    params = {
+        "db": "pmc", 
+        "id": pmcid, 
+        "retmode": "xml"
+    }
+    response = requests.get(search_url, params=params)
+    time.sleep(0.34)
+
+    if response.status_code == 200:
+        return response.content
+    else:
+        return "error"
+    
+
+def extract_article_data(xml):
+    soup = BeautifulSoup(xml, features="xml")  # Verwende den XML-Parser von lxml
+
+    data = pd.DataFrame(columns=['pmid', 'pmcid', 'title', 'abstract', 'full_text', 'authors'])
+
+    pmid = soup.select_one('[pub-id-type="pmid"]')
+    pmid = pmid.text.strip() if pmid else "N/A"
+
+    title = soup.select_one("article-title")
+    title = title.text.strip() if title else "N/A"
+
+    abstract_elem = soup.select_one("abstract")
+    abstract = abstract_elem.text.strip() if abstract_elem and abstract_elem.text.strip() else np.nan
+
+    body_sections = soup.select("body sec")
+    full_text = "\n".join(sec.get_text(strip=True, separator=" ") for sec in body_sections).strip()
+    full_text = full_text if full_text else np.nan
+
+    authors = ", ".join(
+        a.get_text(strip=True, separator=" ") for a in soup.select('[contrib-type="author"]')
+    )
+
+    temp_df = pd.DataFrame([{
+        "pmid": pmid,
+        'pmcid': np.nan,
+        "title": title,
+        "abstract": abstract,
+        "full_text": full_text,
+        "authors": authors
+    }])
+
+    data = pd.concat([data, temp_df], ignore_index=True)
+
+    return data
+
+
+# def pubmed_api_pull(term_input, result_no_input):
+#     df = create_df_pmcids(search_terms=term_input, no_of_results=result_no_input)
+#     df["has_result"] = df["PMCID"].apply(check_if_pmcid_is_available)
+#     df_filtered = df[df['has_result'] == True]
+#     final_df = pd.DataFrame(columns=['pmid', 'title', 'abstract', 'full_text', 'authors'])
+#     for index, row in df_filtered.iterrows():
+#         df_temp = extract_article_data(get_full_xml(row['PMCID']))
+#         final_df = pd.concat([final_df, df_temp], ignore_index=True)
+#     return final_df
+
+# def extract_article_data(xml):
+#     soup = BeautifulSoup(xml, features="xml")  # Verwende den XML-Parser von lxml
+
+#     data = pd.DataFrame(columns=['pmid', 'title', 'abstract', 'full_text', 'authors'])
+
+#     pmid = soup.select_one('[pub-id-type="pmid"]').text.strip() if soup.select_one('[pub-id-type="pmid"]') else "N/A"
+#     title = soup.select_one("article-title").text.strip() if soup.select_one("article-title") else "N/A"
+#     abstract = soup.select_one("abstract").text.strip() if soup.select_one("abstract") else "N/A"
+
+#     full_text = "\n".join(
+#         sec.get_text(strip=True, separator=" ") for sec in soup.select("body sec")
+#     )
+#     authors = ", ".join(
+#         a.get_text(strip=True, separator=" ") for a in soup.select('[contrib-type="author"]')
+#     )
+
+#     temp_df = pd.DataFrame([{"pmid": pmid, "title": title, "abstract": abstract, "full_text": full_text, "authors": authors}])
+#     data = pd.concat([data, temp_df], ignore_index=True)
+
+#     return data
 
 # Not needed anymore 
 # def create_df_pmcids(search_terms, no_of_results):
@@ -113,52 +196,3 @@ def translate_pmid_to_pmcid(pmid):
 #         except ET.ParseError:
 #             return False
 #     return False
-
-
-def get_full_xml(pmcid):
-    search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
-    params = {
-        "db": "pmc", 
-        "id": pmcid, 
-        "retmode": "xml"
-    }
-    response = requests.get(search_url, params=params)
-    time.sleep(0.34)
-
-    if response.status_code == 200:
-        return response.content
-    else:
-        return "error"
-    
-
-def extract_article_data(xml):
-    soup = BeautifulSoup(xml, features="xml")  # Verwende den XML-Parser von lxml
-
-    data = pd.DataFrame(columns=['pmid', 'title', 'abstract', 'full_text', 'authors'])
-
-    pmid = soup.select_one('[pub-id-type="pmid"]').text.strip() if soup.select_one('[pub-id-type="pmid"]') else "N/A"
-    title = soup.select_one("article-title").text.strip() if soup.select_one("article-title") else "N/A"
-    abstract = soup.select_one("abstract").text.strip() if soup.select_one("abstract") else "N/A"
-
-    full_text = "\n".join(
-        sec.get_text(strip=True, separator=" ") for sec in soup.select("body sec")
-    )
-    authors = ", ".join(
-        a.get_text(strip=True, separator=" ") for a in soup.select('[contrib-type="author"]')
-    )
-
-    temp_df = pd.DataFrame([{"pmid": pmid, "title": title, "abstract": abstract, "full_text": full_text, "authors": authors}])
-    data = pd.concat([data, temp_df], ignore_index=True)
-
-    return data
-
-
-# def pubmed_api_pull(term_input, result_no_input):
-#     df = create_df_pmcids(search_terms=term_input, no_of_results=result_no_input)
-#     df["has_result"] = df["PMCID"].apply(check_if_pmcid_is_available)
-#     df_filtered = df[df['has_result'] == True]
-#     final_df = pd.DataFrame(columns=['pmid', 'title', 'abstract', 'full_text', 'authors'])
-#     for index, row in df_filtered.iterrows():
-#         df_temp = extract_article_data(get_full_xml(row['PMCID']))
-#         final_df = pd.concat([final_df, df_temp], ignore_index=True)
-#     return final_df

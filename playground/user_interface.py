@@ -4,10 +4,10 @@
 # Above is only necessary as long as this is under development in playground folder
 
 import streamlit as st
-from pubmed_api import pubmed_api_pull
-from text_mining import check_if_text_has_outbreak
-from text_mining import extract_date
-from text_mining import extract_location
+# from pubmed_api import pubmed_api_pull
+# from text_mining import check_if_text_has_outbreak
+# from text_mining import extract_date
+# from text_mining import extract_location
 
 st.set_page_config(
     page_title="DIS18 - Project Dashboard", 

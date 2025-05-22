@@ -1,2 +1,3 @@
-final_code/__pycache__/
+functions/__pycache__/
 playground/*.csv
+*.tsv
