@@ -46,7 +46,7 @@ with user_input:
                 if term == 'avian influenza':
                     actual_search = '(avian influenza[MeSH Terms]) AND (disease outbreak[MeSH Terms])'
                 elif term == 'ehec':
-                    actual_search = '((disease outbreak[MeSH Terms]) OR (disease outbreaks[MeSH Terms])) AND (ehec[MeSH Terms])'
+                    actual_search = '(ehec[MeSH Terms]) AND (disease outbreak[MeSH Terms])'
                 elif term == 'q-fever':
                     actual_search = '(q fever[MeSH Terms]) AND (disease outbreak[MeSH Terms])'
 
