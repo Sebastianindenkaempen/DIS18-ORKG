@@ -58,8 +58,6 @@ with user_input:
             pubmed_search_list_unique = list(dict.fromkeys(pubmed_search_list))
             pmids_list = []
 
-            st.write(pubmed_search_list)
-            st.write(pubmed_search_list_unique)
             for term in pubmed_search_list_unique:
                 list_pmid_search_term = get_pmids(term, input_no_of_results)
                 for i in list_pmid_search_term:
