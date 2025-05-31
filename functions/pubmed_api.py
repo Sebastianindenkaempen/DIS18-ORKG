@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 # https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch
 
-def get_pmcids(search_term, no_of_results):
+def get_pmids(search_term, no_of_results):
     """
     takes a string and integer as input, returns a list of pubmed IDs 
     """
@@ -83,7 +83,7 @@ def get_full_xml(pmcid):
 def extract_article_data(xml):
     soup = BeautifulSoup(xml, features="xml")  # Verwende den XML-Parser von lxml
 
-    data = pd.DataFrame(columns=['pmid', 'pmcid', 'title', 'abstract', 'full_text', 'authors'])
+    data = pd.DataFrame(columns=['pmid', 'title', 'abstract', 'full_text', 'authors'])
 
     pmid = soup.select_one('[pub-id-type="pmid"]')
     pmid = pmid.text.strip() if pmid else "N/A"
@@ -104,7 +104,6 @@ def extract_article_data(xml):
 
     temp_df = pd.DataFrame([{
         "pmid": pmid,
-        'pmcid': np.nan,
         "title": title,
         "abstract": abstract,
         "full_text": full_text,
