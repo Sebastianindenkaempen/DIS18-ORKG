@@ -30,7 +30,7 @@ with header:
 with user_input:    
     input_search_terms = st.multiselect(label='Choose diseases for Text Mining', options=['avian influenza', 'ehec','q-fever'])
     input_no_of_results = st.number_input("Number of articles", min_value=1, step=1, disabled=st.session_state.is_running)
-    mode = st.radio('Choose mode', options=['spaCy-Mode', 'LLM-Mode'], help='spaCy-mode will search for outbreak info in the abstract and the full text. This is faster but might be not as precise. LLM-Mode will search for outbreak info in the abstract only. This might be more precise but searches less ressources.')
+    mode = st.radio('Choose mode', options=['spaCy-Mode', 'LLM-Mode'], help='spaCy-mode will use Python package spaCy to search for outbreak information in the abstract. This is faster but might be not as precise. LLM-Mode will search for outbreak info in the abstract. This might be more precise but will take longer.')
         
     if st.button("Start Processing", disabled=st.session_state.is_running):
 
