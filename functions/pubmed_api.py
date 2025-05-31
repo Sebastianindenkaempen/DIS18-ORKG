@@ -83,13 +83,16 @@ def get_full_xml(pmcid):
 def extract_article_data(xml):
     soup = BeautifulSoup(xml, features="xml")  # Verwende den XML-Parser von lxml
 
-    data = pd.DataFrame(columns=['pmid', 'title', 'abstract', 'full_text', 'authors'])
+    data = pd.DataFrame(columns=['pmid', 'doi', 'title', 'abstract', 'full_text', 'authors'])
 
     pmid = soup.select_one('[pub-id-type="pmid"]')
-    pmid = pmid.text.strip() if pmid else "N/A"
+    pmid = pmid.text.strip() if pmid else np.nan
+
+    doi = soup.select_one('[pub-id-type="doi"]')
+    doi = doi.text.strip() if doi else np.nan
 
     title = soup.select_one("article-title")
-    title = title.text.strip() if title else "N/A"
+    title = title.text.strip() if title else np.nan
 
     abstract_elem = soup.select_one("abstract")
     abstract = abstract_elem.text.strip() if abstract_elem and abstract_elem.text.strip() else np.nan
@@ -104,6 +107,7 @@ def extract_article_data(xml):
 
     temp_df = pd.DataFrame([{
         "pmid": pmid,
+        "doi": doi, 
         "title": title,
         "abstract": abstract,
         "full_text": full_text,

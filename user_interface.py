@@ -67,7 +67,7 @@ with user_input:
             df['pubmed_central_id'] = df['pubmed_id'].apply(translate_pmid_to_pmcid) 
 
 
-            df_full_texts = pd.DataFrame(columns=['pmid', 'title', 'abstract', 'full_text', 'authors'])
+            df_full_texts = pd.DataFrame(columns=['pmid', 'doi', 'title', 'abstract', 'full_text', 'authors'])
             for pmcid in df['pubmed_central_id']:
                 df_temp = extract_article_data(get_full_xml(pmcid))
                 df_full_texts = pd.concat([df_full_texts, df_temp], ignore_index=True)
