@@ -3,8 +3,8 @@
 ## How to use this repository
 1. Clone this repository
 2. Navigate into this repository using the command line `cd ./DIS18-ORKG`
-3. Make sure the shell script ist ready to be executed by running: `chmod +x run_app.sh`
-3. Execute the shell script using `./run_app.sh`
+3. Build the docker image by running: `docker build -t outbreak-analyzer .`
+4. Start the container by using `docker run -p 8501:8501 -p 11434:11434 outbreak-analyzer`
 
 
 ## Topic
