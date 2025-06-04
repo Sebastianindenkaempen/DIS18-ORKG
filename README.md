@@ -32,6 +32,10 @@ import nltk
 import spaCy
 
 ```
+
+### ORKG 
+- CSV Upload: https://orkg.org/help-center/article/16/Import_CSV_files_in_ORKG 
+
 ## Repo structure 
 ### Folder final_code    
 Contains tested functions, that can be called

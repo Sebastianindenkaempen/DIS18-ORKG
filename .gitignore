@@ -1,2 +1,4 @@
-final_code/__pycache__/
-playground/*.csv
+functions/__pycache__/
+playground/*.ipynb
+*.tsv
+*.csv
