@@ -79,3 +79,85 @@
 #         except ET.ParseError:
 #             return False
 #     return False
+
+# # Lade das spaCy-Modell nur einmal
+# nlp = spacy.load("en_core_web_sm")
+# # nlp = spacy.load("en_core_web_md")
+# # nlp = spacy.load("en_core_web_trf")
+
+# # Initialisiere PhraseMatcher mit relevanten Phrasen
+# matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
+# phrases = [
+#     "outbreak", "epidemic", "cases reported in", "first detected",
+#     "incidence in", "occurred in", "emerged in", "infection reported"
+# ]
+# patterns = [nlp.make_doc(p) for p in phrases]
+# matcher.add("OUTBREAK", patterns)
+
+# # Die Hauptfunktion
+# def extract_outbreak_info(df, text_column="full-text"):
+#     outbreak_locations = []
+#     outbreak_dates = []
+
+#     for text in df[text_column]:
+#         doc = nlp(text)
+#         locations = set()
+#         dates = set()
+
+#         matches = matcher(doc)
+#         for match_id, start, end in matches:
+#             sent = doc[start:end].sent
+#             for ent in sent.ents:
+#                 if ent.label_ == "GPE":
+#                     locations.add(ent.text)
+#                 elif ent.label_ == "DATE":
+#                     dates.add(ent.text)
+
+#         # Füge erkannte Infos zum Ergebnis hinzu (leere Strings, falls nichts gefunden)
+#         outbreak_locations.append(", ".join(locations) if locations else "")
+#         outbreak_dates.append(", ".join(dates) if dates else "")
+
+#     # Neue Spalten zum DataFrame hinzufügen
+#     df["outbreak_locations"] = outbreak_locations
+#     df["outbreak_dates"] = outbreak_dates
+#     return df
+
+# def check_if_text_has_outbreak(text):
+#     response = requests.post(
+#         "http://localhost:11434/api/generate",
+#         json={
+#             "model": "phi4-mini",
+#             "prompt": 
+#         f"""
+#         Analysiere den folgenden Text sehr genau:
+
+#         {text}
+
+#         Frage: Beschreibt der Text einen Krankheitsausbruch, bei dem sowohl ein konkreter Ort (z.B. Ländername, Stadt) als auch ein konkreter Zeitpunkt (z.B. Datum, Monat/Jahr) genannt werden?
+
+#         Antworte ausschließlich mit:
+#         True  --> falls sowohl Ort als auch konkreter Zeitpunkt des Ausbruchs im Text genannt werden
+#         False --> falls Ort oder konkreter Zeitpunkt fehlen oder kein Ausbruch beschrieben wird
+
+#         Antwort:""",
+#             "stream": False
+#         }
+
+#         )
+#     return response.json()["response"]
+
+# def regex_check_if_text_has_outbreak(text):
+#     pattern = r"\b(outbreak\b|epidemic\b|cases (have been|were|are)? reported in|first (was )?detected|incidence in|occurred in|emerged in|infection (has been|was)? reported)\b"
+#     if re.search(pattern, text, flags=re.IGNORECASE):
+#         return True
+#     else:
+#         return False
+
+# def parse_outbreak(value):
+#     if isinstance(value, str):
+#         val = value.lower()
+#         if 'true' in val:
+#             return True
+#         elif 'false' in val:
+#             return False
+#     return np.nan
