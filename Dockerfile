@@ -16,10 +16,16 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -
     rm /tmp/miniconda.sh
 ENV PATH=$CONDA_DIR/bin:$PATH
 
-# Conda Umgebung aus environment.yml
-COPY environment.yml .
-RUN conda env create -f environment.yml
+# Lockfile und Umgebung erzeugen
+COPY conda-linux-64.lock ./
+
+# conda-lock installieren (zum Erzeugen der env aus dem Lockfile)
+RUN conda install -y -c conda-forge conda-lock
+
+# Umgebung aus Lockfile erstellen (Name hier z. B. mein_env)
+RUN conda-lock install --name mein_env conda-linux-64.lock
 ENV PATH=/opt/conda/envs/mein_env/bin:$PATH
+
 
 # Arbeitsverzeichnis setzen
 WORKDIR /app
@@ -28,10 +34,9 @@ COPY . .
 # --------------------
 # OLLAMA installieren
 # --------------------
-# GPG Key und Repository hinzufügen
-RUN curl -fsSL https://ollama.com/install.sh | sh
+ADD https://ollama.com/install.sh /tmp/install_ollama.sh
+RUN sh /tmp/install_ollama.sh
 
-# Modell vorab laden (optional: spart Wartezeit beim Start)
 RUN ollama serve & \
     sleep 5 && \
     ollama pull phi4-mini && \
@@ -46,5 +51,4 @@ RUN pip install supervisor
 # Supervisor-Konfiguration hinzufügen
 COPY supervisord.conf /etc/supervisord.conf
 
-# Startet Ollama + Streamlit parallel
 CMD ["/opt/conda/envs/mein_env/bin/supervisord", "-c", "/etc/supervisord.conf"]
