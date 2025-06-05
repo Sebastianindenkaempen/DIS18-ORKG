@@ -30,7 +30,7 @@ with header:
 with user_input:    
     input_search_terms = st.multiselect(label='Choose diseases for Text Mining', options=['avian influenza', 'ehec','q-fever'])
     input_no_of_results = st.number_input("Number of articles", min_value=1, step=1, disabled=st.session_state.is_running)
-    mode = st.radio('Choose mode', options=['spaCy-Mode', 'LLM-Mode'], help='spaCy-mode will use Python package spaCy to search for outbreak information in the abstract. This is faster but might be not as precise. LLM-Mode will search for outbreak info in the abstract. This might be more precise but will take longer.')
+    mode = st.radio('Choose mode', options=['spaCy-Mode (abstract-only)', 'spaCy-Mode (abstract + fulltext)', 'LLM-Mode'], help='spaCy offers two modes: abstract-only and abstract + fulltext. Abstract only is faster and more precise but only analyses limited text input. LLM-Mode will search for outbreak info in the abstract. This might be more precise but will take longer.')
         
     if st.button("Start Processing", disabled=st.session_state.is_running):
 
@@ -77,8 +77,12 @@ with user_input:
             # df.dropna(subset=['abstract', 'full_text'], inplace=True, thresh=2, ignore_index=True)
             df.fillna(value='no text available', axis=0, inplace=True)
 
-            if mode == 'spaCy-Mode':
+            if mode == 'spaCy-Mode (abstract-only)':
                 df = extract_outbreak_info(df, 'abstract')
+            elif mode == 'spaCy-Mode (abstract + fulltext)':
+                df['combined_text'] = df['abstract'] + ' ' + df['full_text']
+                df = extract_outbreak_info(df, 'combined_text')
+                df = df.drop(columns={'combined_text'})
             elif mode == 'LLM-Mode':
                 df['summary_llm'] = df['abstract'].apply(summarize_outbreak)
                 df['outbreak_locations'] = df['summary_llm'].apply(extract_location)
