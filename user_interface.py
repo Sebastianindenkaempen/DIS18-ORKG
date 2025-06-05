@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 
 import importlib
 import functions.pubmed_api
@@ -31,7 +32,8 @@ with user_input:
     input_search_terms = st.multiselect(label='Choose diseases for Text Mining', options=['avian influenza', 'ehec','q-fever'])
     input_no_of_results = st.number_input("Number of articles", min_value=1, step=1, disabled=st.session_state.is_running)
     mode = st.radio('Choose mode', options=['spaCy-Mode (abstract-only)', 'spaCy-Mode (abstract + fulltext)', 'LLM-Mode'], help='spaCy offers two modes: abstract-only and abstract + fulltext. Abstract only is faster and more precise but only analyses limited text input. LLM-Mode will search for outbreak info in the abstract. This might be more precise but will take longer.')
-        
+    output_format = st.radio('Choose output', options=['ORKG-Upload', 'Raw'], help='ORKG-Upload formats the data so it can be downloaded and uploaded per CSV to ORGK. Raw-format is ideal for bugfixing and understanding how the process works.')    
+
     if st.button("Start Processing", disabled=st.session_state.is_running):
 
         with st.spinner("Processing... Please wait"):
@@ -72,7 +74,14 @@ with user_input:
                 df_temp = extract_article_data(get_full_xml(pmcid))
                 df_full_texts = pd.concat([df_full_texts, df_temp], ignore_index=True)
 
-            df = pd.merge(df, df_full_texts, how='left', left_on='pubmed_id', right_on='pmid', validate='one_to_one')
+            df = pd.merge(
+                df, 
+                df_full_texts, 
+                how='left', 
+                left_on='pubmed_id', 
+                right_on='pmid' 
+                # , validate='one_to_one'
+                )
             df.drop(columns={'pmid'}, inplace=True)
             # df.dropna(subset=['abstract', 'full_text'], inplace=True, thresh=2, ignore_index=True)
             df.fillna(value='no text available', axis=0, inplace=True)
@@ -91,4 +100,19 @@ with user_input:
 
 
             st.write("### Output:")
-            st.write(df)
+
+            if output_format == 'ORKG-Upload':
+
+                for column in ['authors', 'publication_month', 'publication_year', 'published_in', 'url', 'research_problem']:
+                    df[column] = np.nan
+
+                df['research_field'] = 'R677193'
+                df['extraction_method'] = 'AUTOMATIC'
+
+                df = df[['title', 'authors', 'publication_month', 'publication_year', 'published_in', 'research_field', 'doi', 'url', 'research_problem', 'extraction_method', 'outbreak_locations', 'outbreak_dates']]
+                df = df.rename(columns={'outbreak_locations':'location', 'outbreak_dates':'Dates'}) 
+            else: 
+                df = df
+
+            st.dataframe(df, hide_index=True)
+
