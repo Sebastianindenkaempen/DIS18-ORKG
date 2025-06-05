@@ -46,7 +46,8 @@ RUN ollama serve & \
 EXPOSE 8501 11434
 
 # Supervisord installieren für Multi-Service-Start
-RUN pip install supervisor
+RUN conda install -n mein_env -y -c conda-forge supervisor
+
 
 # Supervisor-Konfiguration hinzufügen
 COPY supervisord.conf /etc/supervisord.conf
