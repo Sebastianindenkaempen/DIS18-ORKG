@@ -27,11 +27,12 @@ if "is_running" not in st.session_state:
 with header: 
     st.title("Welcome")
     st.write("""
-            This interafe aims to make it as easy as possible for you as a user users to automatically or semi-automatically extract data (location, time) related to outbreaks of specific diseases from articles listed in PubMed and upload them back to ORKG.
+            This interface aims to make it as easy as possible for you as a user users to automatically or semi-automatically extract data (location, time) related to outbreaks of specific diseases from articles listed in PubMed and upload them back to ORKG.
             """)
 
-with user_input:    
-    input_search_terms = st.multiselect(label='Choose diseases for Text Mining', options=['avian influenza', 'ehec','q-fever'])
+with user_input:
+    st.markdown('### Enter user input')    
+    input_search_terms = st.multiselect(label='Choose diseases for textmining', options=['avian influenza', 'ehec','q-fever'])
     input_no_of_results = st.number_input("Number of articles", min_value=1, step=1, disabled=st.session_state.is_running)
     mode = st.radio('Choose mode', options=['spaCy-Mode', 'LLM-Mode'], help='spaCy-mode will use Python package spaCy to search for outbreak information in the abstract. This is faster but might be not as precise. LLM-Mode will search for outbreak info in the abstract. This might be more precise but will take longer.')
         

@@ -2,7 +2,7 @@ import requests
 import time
 import pandas as pd
 import numpy as np
-import xml.etree.ElementTree as ET
+# import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 # import pytest
 
@@ -61,7 +61,6 @@ def translate_pmid_to_pmcid(pmid):
     for id_obj in article_ids:
         if id_obj["idtype"] == "pmc":
             return id_obj["value"]
-    print("Kein PMCID gefunden.")
     return None
 
 def get_full_xml(pmcid):
@@ -77,11 +76,11 @@ def get_full_xml(pmcid):
     if response.status_code == 200:
         return response.content
     else:
-        return "error"
+        return "error: response status code != 200"
     
 
-def extract_article_data(xml):
-    soup = BeautifulSoup(xml, features="xml")  # Verwende den XML-Parser von lxml
+def extract_article_data(xml) -> pd.DataFrame:
+    soup = BeautifulSoup(xml, features="xml")
 
     data = pd.DataFrame(columns=['pmid', 'doi', 'title', 'abstract', 'full_text', 'authors'])
 
