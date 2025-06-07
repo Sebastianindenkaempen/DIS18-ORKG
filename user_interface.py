@@ -87,7 +87,7 @@ with user_input:
             df.drop(columns={'pmid'}, inplace=True)
             df.fillna(value='no text available', axis=0, inplace=True)
 
-            # Do the textmining 
+            # Do the textmining according to user selected mode. 
             if mode == 'spaCy-Mode':
                 df = extract_outbreak_info(df, 'abstract')
             elif mode == 'LLM-Mode':
