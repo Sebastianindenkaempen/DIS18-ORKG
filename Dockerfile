@@ -31,6 +31,12 @@ ENV PATH=/opt/conda/envs/mein_env/bin:$PATH
 WORKDIR /app
 COPY . .
 
+# spaCy Sprachmodell herunterladen
+RUN python -m spacy download en_core_web_sm
+# spaCy Sprachmodell herunterladen
+RUN python -m spacy download en_core_web_md
+
+
 # --------------------
 # OLLAMA installieren
 # --------------------
