@@ -26,6 +26,9 @@ RUN conda install -y -c conda-forge conda-lock
 RUN conda-lock install --name mein_env conda-linux-64.lock
 ENV PATH=/opt/conda/envs/mein_env/bin:$PATH
 
+RUN conda run -n mein_env python -m ensurepip
+RUN conda run -n mein_env pip install --upgrade pip
+
 
 # Arbeitsverzeichnis setzen
 WORKDIR /app
