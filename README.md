@@ -3,6 +3,7 @@
 2. Navigate into this repository using the command line `cd ./DIS18-ORKG`
 3. Build the docker image by running: `docker build -t outbreak-analyzer .` (If it does not work, try `docker build --platform linux/amd64 -t outbreak-analyzer .`)
 4. Start the container by using `docker run -p 8501:8501 -p 11434:11434 outbreak-analyzer`
+5. Open http://localhost:8501 in your browser to run the application.
 
 
 ## Table of Contents

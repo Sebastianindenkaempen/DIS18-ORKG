@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
-# import pytest
 
 # https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch
 
