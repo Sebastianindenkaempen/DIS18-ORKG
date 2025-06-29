@@ -24,10 +24,10 @@ To give the user of this repository an easy entry to the topic we created a user
 In case you want to understand the code further, you also can use the provided jupyter notebooks which contain the same code as the user interface but obviously shown more in depth. 
 
 ## PubMed extraction process
-To automatically get all the date we need, we used the PubMed api, which is provided by Entrez. The API is actually divided into three main components: esearch, esummary and efetch. [[1]](#[1]) <br>
+To automatically get all the date we need, we used the PubMed api, which is provided by Entrez. The API is actually divided into three main components: esearch, esummary and efetch. [1] <br>
 We are also using two different Entrez Databases: PubMed for sending the search request to and pubmed central to retrieve the fulltexts from. <br>
 
-To send a specific search request to pubmed and receive the pubmed ids, we are using the esearch part. This is done using the function get_pmids (TODO: Link to code). <br> This function uses the pubmed database as it is slightly easier to query. <br> 
+To send a specific search request to pubmed and receive the pubmed ids, we are using the esearch part. This is done using the function get_pmids(#problem-statement) (TODO: Link to code). <br> This function uses the pubmed database as it is slightly easier to query. <br> 
 During the project we noticed that only using a free text query term does provide a few problems. Most important, a lot of the retrieved articles did not exactly did not contain information about concrete outbreaks. Therefore we included a preprocessing of the search terms, which translates the term into meSH-Terms (TODO: Link to Code)  
 
 As the pubmed database does not offer fulltexts for the articles we have to translate the received pubmed ids into pubmed central (pmc) ids. We are doing this by using the function translate_pmid_to_pmcid (TODO: Link to code) and the esummary api components as it provides meta data from articles. 

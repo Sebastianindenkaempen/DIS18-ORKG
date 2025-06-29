@@ -5,12 +5,12 @@ import numpy as np
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 
-# https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch
-
-def get_pmids(search_term, no_of_results):
+def get_pmids(search_term: str, no_of_results: int) -> list[str]:
+    
     """
     takes a string and integer as input, returns a list of pubmed IDs 
     """
+
     search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
     params = {
         "db": "pubmed",                                                 # Source: https://www.ncbi.nlm.nih.gov/books/NBK25497/table/chapter2.T._entrez_unique_identifiers_ui/?report=objectonly
@@ -29,14 +29,20 @@ def get_pmids(search_term, no_of_results):
         return []
     
 
-def translate_pmid_to_pmcid(pmid):
+def translate_pmid_to_pmcid(pmid: str) -> str | None:
+
+    """
+    Converts a PubMed ID (PMID) to a PubMed Central ID (PMCID) using the NCBI API.
+
+    Returns the PMCID as a string or None if not found or request fails.
+    """
+
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
     params = {
         "db": "pubmed",
         "id": pmid,
         "retmode": "json"
     }
-    
     response = requests.get(url, params=params)
 
     # Falls die Antwort leer oder fehlerhaft ist
@@ -63,7 +69,14 @@ def translate_pmid_to_pmcid(pmid):
     print("Kein PMCID gefunden.")
     return None
 
-def get_full_xml(pmcid):
+def get_full_xml(pmcid: str) -> bytes | str:
+
+    """
+    Fetches the full XML of an article from PMC by its PMCID.
+
+    Returns the XML content as bytes if successful, otherwise "error".
+    """
+
     search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
     params = {
         "db": "pmc", 
@@ -80,9 +93,11 @@ def get_full_xml(pmcid):
     
 
 def extract_article_data(xml: str) -> pd.DataFrame:
+    
     """
     extracts data from a pmc style article
     """
+
     soup = BeautifulSoup(xml, features="xml")
 
     data = pd.DataFrame(columns=['pmid', 'doi', 'title', 'abstract', 'full_text', 'authors'])
