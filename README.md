@@ -51,7 +51,7 @@ We decided to only use the abstract in this approach as analysing the fulltext t
 The user interface lets you choose which kind of outout you prefer. In any case you can download the result of the process by klicking the download symbol on the top right corner of the output table. 
 
 #### ORKG Format
-This format is specifically prepared to be uploaded to ORKG by using the CSV upload function. Therefore all the columns are specifically named so that ORKG can find the matches right away. In some cases the data format of specific cells or rows is not compatible with ORKG. In these cases the output can be manually corrected either directly in ORKG or in the user interface. 
+This format is specifically prepared to be uploaded to ORKG by using the CSV upload function. Therefore all the columns are specifically named so that ORKG can find the matches right away. In some cases the data format of specific cells or rows is not compatible with ORKG. In these cases the output can be manually corrected either directly in ORKG or in the user interface [2]. 
 
 #### Raw Format
 This format is ideal for bugfixing or understanding exactly how the process works. It also offers a possibility to download the data and apply other use cases but to upload to ORKG. 
@@ -61,30 +61,7 @@ For all known issues, there are issues created directly in github. Feel free to 
 
 ## Sources
 
-#### [1]
+#### [1] https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EInfo
+#### [2] https://orkg.org/help-center/article/16/Import_CSV_files_in_ORKG 
 
-
-- PubMed: https://www.ncbi.nlm.nih.gov/books/NBK25501/ 
-- PubMed Central: https://pmc.ncbi.nlm.nih.gov/tools/developers/
-
-### PubMed API
-The pubmed api contains three different components:
-- **ESearch:** searches articles and returns pubmed article ids URL: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi
-- **ESummary:** finds and returns metadata for articles. Input could be the article IDs from ESearch. URL: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi
-- **EFetch:** returns abstracts and full texts. URL: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi
-
-Source: https://www.ncbi.nlm.nih.gov/books/NBK25500/
-
-Sources Text Mining: https://pmc.ncbi.nlm.nih.gov/tools/textmining/ 
-
-
-
-### ORKG 
-- CSV Upload: https://orkg.org/help-center/article/16/Import_CSV_files_in_ORKG 
-
-## Repo structure 
-### Folder final_code    
-Contains tested functions, that can be called
-### Folder playground
-Contains code that is in developement or not yet tested
 
