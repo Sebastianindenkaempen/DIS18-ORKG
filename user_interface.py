@@ -30,11 +30,11 @@ with header:
 
 with user_input:    
     input_search_terms = st.multiselect(label='Choose diseases for Text Mining', options=['avian influenza', 'ehec','q-fever'])
-    input_no_of_results = st.number_input("Number of articles", min_value=1, step=1, disabled=st.session_state.is_running)
+    input_no_of_results = st.number_input("Number of articles", min_value=1, step=1)
     mode = st.radio('Choose mode', options=['spaCy-Mode (abstract-only)', 'spaCy-Mode (abstract + fulltext)', 'LLM-Mode'], help='spaCy offers two modes: abstract-only and abstract + fulltext. Abstract only is faster and more precise but only analyses limited text input. LLM-Mode will search for outbreak info in the abstract. This might be more precise but will take longer.')
     output_format = st.radio('Choose output', options=['ORKG-Upload', 'Raw'], help='ORKG-Upload formats the data so it can be downloaded and uploaded per CSV to ORGK. Raw-format is ideal for bugfixing and understanding how the process works.')    
 
-    if st.button("Start Processing", disabled=st.session_state.is_running):
+    if st.button("Start Processing"):
 
         with st.spinner("Processing... Please wait"):
             term_list = []
