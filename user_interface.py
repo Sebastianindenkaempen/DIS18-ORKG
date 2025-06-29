@@ -20,9 +20,9 @@ st.set_page_config(
 header = st.container()
 user_input = st.container() 
 
-# Variable to track session status
-if "is_running" not in st.session_state:
-    st.session_state.is_running = False
+# Variable to track session status TODO: fix
+# if "is_running" not in st.session_state:
+#     st.session_state.is_running = False
 
 with header: 
     st.title("Welcome")
@@ -96,7 +96,7 @@ with user_input:
                 df['summary_llm'] = df['abstract'].apply(summarize_outbreak)
                 df['outbreak_locations'] = df['summary_llm'].apply(extract_location)
                 df['outbreak_dates'] = df['summary_llm'].apply(extract_date)
-                # df = df.drop(columns={'summary_llm'}) TODO: activate for final version
+                # df = df.drop(columns={'summary_llm'})
 
 
             st.write("### Output:")

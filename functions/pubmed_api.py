@@ -79,8 +79,11 @@ def get_full_xml(pmcid):
         return "error"
     
 
-def extract_article_data(xml):
-    soup = BeautifulSoup(xml, features="xml")  # Verwende den XML-Parser von lxml
+def extract_article_data(xml: str) -> pd.DataFrame:
+    """
+    extracts data from a pmc style article
+    """
+    soup = BeautifulSoup(xml, features="xml")
 
     data = pd.DataFrame(columns=['pmid', 'doi', 'title', 'abstract', 'full_text', 'authors'])
 
