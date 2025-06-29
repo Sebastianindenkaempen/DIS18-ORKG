@@ -33,7 +33,7 @@ During the project we noticed that only using a free text query term does provid
 As the pubmed database does not offer fulltexts for the articles we have to translate the received pubmed ids into pubmed central (pmc) ids. We are doing this by using the function [`translate_pmid_to_pmcid`](https://github.com/Sebastianindenkaempen/DIS18-ORKG/blob/849cd23ffa4ba07df12afc367f9c719ada1b0d7e/functions/pubmed_api.py#L32) and the esummary api components as it provides meta data from articles. 
 
 To extract the full text and further metadata about the articles we are using the esummary api components as well as the pubmed central database. We use the earlier retrieved pmc ids to query this database. Therefore we also use the function [`get_full_xml`](https://github.com/Sebastianindenkaempen/DIS18-ORKG/blob/849cd23ffa4ba07df12afc367f9c719ada1b0d7e/functions/pubmed_api.py#L72) <br>
-This only returns a xml sceleton from which we extract all necessary information by using the function [`extract_article_data`] (https://github.com/Sebastianindenkaempen/DIS18-ORKG/blob/849cd23ffa4ba07df12afc367f9c719ada1b0d7e/functions/pubmed_api.py#L95). This returns the information in a structured dataframe format. 
+This only returns a xml sceleton from which we extract all necessary information by using the function [`extract_article_data`](https://github.com/Sebastianindenkaempen/DIS18-ORKG/blob/849cd23ffa4ba07df12afc367f9c719ada1b0d7e/functions/pubmed_api.py#L95). This returns the information in a structured dataframe format. 
 
 ## Text Mining
 For the Text Mining, we tried a lot of approaches and included the most promising into the user interface. 
