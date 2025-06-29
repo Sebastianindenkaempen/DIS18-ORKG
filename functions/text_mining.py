@@ -1,9 +1,18 @@
 import requests
 import spacy
+import pandas as pd
 from spacy.matcher import PhraseMatcher
 
 
-def summarize_outbreak(text):
+def summarize_outbreak(text: str) -> str:
+    
+    """
+    Sends a prompt to a local LLM (phi4-mini) to extract outbreak-related 
+    locations and dates from a given text.
+
+    Returns a concise summary describing where and when outbreaks occurred.
+    """
+
     response = requests.post(
         "http://localhost:11434/api/generate",
         json={
@@ -30,46 +39,60 @@ def summarize_outbreak(text):
 
     return response.json()["response"].strip()
 
-def extract_location(text):
+
+def extract_location(text: str) -> str | None:
+    
+    """
+    Extracts location names from text using spaCy.
+
+    Returns a comma-separated string or None if no locations found.
+    """
+
     nlp = spacy.load("en_core_web_sm")
     doc = nlp(text)
     locations = [ent.text for ent in doc.ents if ent.label_ in ["GPE", "LOC"]]
     return ", ".join(locations) if locations else None
 
-def extract_date(text):
+
+def extract_date(text: str) -> str | None:
+    
+    """
+    Extracts date expressions from text using spaCy.
+
+    Returns a comma-separated string or None if no dates found.
+    """
+
     nlp = spacy.load("en_core_web_sm")
     doc = nlp(text)
     dates = [ent.text for ent in doc.ents if ent.label_ == "DATE"]
     return ", ".join(dates) if dates else None
 
 
-nlp = spacy.load("en_core_web_md")
+def extract_outbreak_info(df: pd.DataFrame, text_column: str = "full-text") -> pd.DataFrame:
 
-# Initialisiere PhraseMatcher
-matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
-phrases = [
-    # "outbreak", "epidemic", "cases", "first detected",
-    # "incidence", "emerged in", "infection reported", 
-    'has caused', 'outbreak', 'outbreaks', ' virus detections', 'detection', 'reported', 'emergence', 'have been identified', 'occured in', 
-    'cases', 'epizootic waves', 'detected in', 'emerged in'
-    'mortality event' # TODO: challengen
-]
-patterns = [nlp.make_doc(p) for p in phrases]
-matcher.add("OUTBREAK", patterns)
+    """
+    Extracts outbreak-related locations and dates from texts using spaCy and PhraseMatcher.
+    Adds two new columns: 'outbreak_locations' and 'outbreak_dates'.
+    """
+    
+    nlp = spacy.load("en_core_web_md")
 
-# Hilfsfunktion: prüft, ob eine Phrase negiert ist
-def is_negated(span):
-    for token in span.root.head.subtree:
-        if token.dep_ == "neg":
-            return True
-    return False
+    matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
+    phrases = [
+        'has caused', 'outbreak', 'outbreaks', ' virus detections', 'detection', 'reported', 'emergence', 'have been identified', 'occured in', 
+        'cases', 'epizootic waves', 'detected in', 'emerged in'
+        'mortality event' # TODO: challengen
+    ]
+    patterns = [nlp.make_doc(p) for p in phrases]
+    matcher.add("OUTBREAK", patterns)
 
-# TODO: Phrases trennen bei Semikolon möglich?
-# TODO: Gewissen Phrasen aussortieren z.B. Spanish Influenza? Oder 1918 insgesamt? 
-# TODO: Erster reporteter Case finden von allen Krankheiten und hart rausfiltern 
-
-# Hauptfunktion
-def extract_outbreak_info(df, text_column="full-text"):
+    # Helper function - filters negations
+    def is_negated(span):
+        for token in span.root.head.subtree:
+            if token.dep_ == "neg":
+                return True
+        return False
+    
     outbreak_locations = []
     outbreak_dates = []
 
@@ -92,7 +115,6 @@ def extract_outbreak_info(df, text_column="full-text"):
                     locations.add(ent.text)
                 elif ent.label_ == "DATE":
                     dates.add(ent.text)
-                    # TODO: Pattern YYYY-YYYY wird nicht als Datum erkannt, vielleicht Regex einbauen? 
 
         outbreak_locations.append(", ".join(locations) if locations else "")
         outbreak_dates.append(", ".join(dates) if dates else "")
